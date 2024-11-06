@@ -118,7 +118,6 @@ int sc_main(int argc, char* argv[]) {
     		i_packetReady = 0;
     		i_fifo_empty = 1;
 
-//    		for(int i=0; i<40 ; i++){
 				for(int i=0; i<10; i++){
 					i_clock = 0; sc_start(10,SC_NS);
 					i_clock = 1; sc_start(10,SC_NS);}
@@ -132,11 +131,81 @@ int sc_main(int argc, char* argv[]) {
 
 				i_ready_to_receive = 0;
 				i_fifo_empty = 0;
-//    		}
 
-				for(int i=0; i<40; i++){
+
+				for(int i=0; i<20; i++){
+					i_clock = 0; sc_start(10,SC_NS);
+					i_clock = 1; sc_start(10,SC_NS);
+
+					if (o_fifo_pop.read() == 1) {
+					   i_fifo_dataOut = i_fifo_dataOut.read() + 1; // Incrementar el dato de entrada
+					}
+				}	//Finalizo paquete 1
+
+// Paquete 2
+				//Paquete listo y ya en la entrada i_fifo_dataOut
+	    		i_packetReady = 1;
+	    		i_fifo_empty = 0;
+
+	    		for(int i=0; i<2; i++){
+	    			i_clock = 0; sc_start(10,SC_NS);
+	    			i_clock = 1; sc_start(10,SC_NS);}
+	    		i_packetReady = 0;
+
+	    		for(int i=0; i<10; i++){
 					i_clock = 0; sc_start(10,SC_NS);
 					i_clock = 1; sc_start(10,SC_NS);}
+
+				i_ready_to_receive = 1;
+				i_fifo_empty = 0;
+
+				for(int i=0; i<2; i++){
+					i_clock = 0; sc_start(10,SC_NS);
+					i_clock = 1; sc_start(10,SC_NS);}
+
+				i_ready_to_receive = 0;
+				i_fifo_empty = 0;
+
+
+				for(int i=0; i<20; i++){
+					i_clock = 0; sc_start(10,SC_NS);
+					i_clock = 1; sc_start(10,SC_NS);
+					if (o_fifo_pop.read() == 1) {
+					   i_fifo_dataOut = i_fifo_dataOut.read() + 1; // Incrementar el dato de entrada
+					}
+				}	//Finalizo paquete 2 que no espera por ready to receive
+
+				// Paquete 2
+//Paquete listo y ya en la entrada i_fifo_dataOut
+	    		i_packetReady = 1;
+	    		i_fifo_empty = 0;
+	    		for(int i=0; i<2; i++){
+	    			i_clock = 0; sc_start(10,SC_NS);
+	    			i_clock = 1; sc_start(10,SC_NS);}
+	    		i_packetReady = 0;
+	    		for(int i=0; i<10; i++){
+					i_clock = 0; sc_start(10,SC_NS);
+					i_clock = 1; sc_start(10,SC_NS);}
+				i_ready_to_receive = 1;
+				i_fifo_empty = 0;
+				for(int i=0; i<2; i++){
+					i_clock = 0; sc_start(10,SC_NS);
+					i_clock = 1; sc_start(10,SC_NS);}
+				i_ready_to_receive = 0;
+				i_fifo_empty = 0;
+				for(int i=0; i<50; i++){
+					i_clock = 0; sc_start(10,SC_NS);
+					i_clock = 1; sc_start(10,SC_NS);
+					if (o_fifo_pop.read() == 1) {
+					   if(transmission.Transmitter->count == 0)
+					   {
+						i_fifo_empty = 1;
+						i_fifo_dataOut = 0;
+					   }else{
+						i_fifo_dataOut = i_fifo_dataOut.read() + 1; // Incrementar el dato de entrada
+					   }
+					}
+				}	//Fin paquete 3
 
 cout << "@" << sc_time_stamp() << "Terminating simulation" << endl;
 sc_close_vcd_trace_file(wf);
