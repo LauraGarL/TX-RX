@@ -63,7 +63,7 @@ SC_MODULE(RX){
 						o_OnOff.write(1);
 						o_fifo_push.write(0);
 
-						count = i_fifo_dataOut.read() + 2;
+						//count = i_fifo_dataOut.read() + 1;
 
 			    	  if (i_Req.read() && i_SoP.read()) {
 			    		  state = 2;
@@ -76,7 +76,7 @@ SC_MODULE(RX){
 
 						if(prev_state != 2){
 							o_fifo_push.write(1);
-							count--;
+							count = i_fifo_dataOut.read() + 1;
 							packet++;
 						}else{o_fifo_push.write(0);}
 

@@ -1,5 +1,5 @@
 $date
-     Nov 04, 2024       10:04:55
+     Nov 06, 2024       11:08:25
 $end
 
 $version
@@ -24,13 +24,15 @@ $var wire   32  aaaaj  o_nPackets_received [31:0]  $end
 $var wire    1  aaaak  o_packet_received       $end
 $var wire   32  aaaal  o_nPackets_sent [31:0]  $end
 $var wire    1  aaaam  o_packet_sent       $end
-$var wire   32  aaaan  TX State [31:0]  $end
-$var wire   32  aaaao  RX State [31:0]  $end
-$var wire    9  aaaap  TX Count [8:0]  $end
-$var wire    9  aaaaq  RX Count [8:0]  $end
-$var wire    1  aaaar  OnOff_fromRX_toTX       $end
-$var wire    1  aaaas  Req_fromTX_toRX       $end
-$var wire    1  aaaat  SoP_fromTX_toRX       $end
+$var wire   32  aaaan  TX_State [31:0]  $end
+$var wire    9  aaaao  TX_Count [8:0]  $end
+$var wire   32  aaaap  TX_nPackets [31:0]  $end
+$var wire   32  aaaaq  RX_State [31:0]  $end
+$var wire    9  aaaar  RX_Count [8:0]  $end
+$var wire   32  aaaas  RX_nPackets [31:0]  $end
+$var wire    1  aaaat  OnOff_fromRX_toTX       $end
+$var wire    1  aaaau  Req_fromTX_toRX       $end
+$var wire    1  aaaav  SoP_fromTX_toRX       $end
 $upscope $end
 $enddefinitions  $end
 
@@ -56,9 +58,11 @@ b0 aaaan
 b0 aaaao
 b0 aaaap
 b0 aaaaq
-0aaaar
-0aaaas
+b0 aaaar
+b0 aaaas
 0aaaat
+0aaaau
+0aaaav
 $end
 
 #20000
@@ -112,7 +116,7 @@ b1 aaaan
 
 #160000
 1aaaaa
-b110 aaaap
+b110 aaaao
 
 #170000
 0aaaaa
@@ -183,15 +187,14 @@ b110 aaaap
 
 #380000
 1aaaaa
-b1 aaaao
+b1 aaaaq
 
 #390000
 0aaaaa
 
 #400000
 1aaaaa
-b110 aaaaq
-1aaaar
+1aaaat
 
 #410000
 0aaaaa
@@ -206,15 +209,17 @@ b10 aaaan
 
 #440000
 1aaaaa
-1aaaas
-1aaaat
+b101 aaaao
+b1 aaaap
+1aaaau
+1aaaav
 
 #450000
 0aaaaa
 
 #460000
 1aaaaa
-b10 aaaao
+b10 aaaaq
 
 #470000
 0aaaaa
@@ -222,9 +227,10 @@ b10 aaaao
 #480000
 1aaaaa
 1aaaai
-b11 aaaao
-b101 aaaaq
-0aaaar
+b11 aaaaq
+b101 aaaar
+b1 aaaas
+0aaaat
 
 #490000
 0aaaaa
@@ -233,56 +239,57 @@ b101 aaaaq
 1aaaaa
 0aaaai
 b11 aaaan
-b100 aaaao
-1aaaar
+b100 aaaaq
+1aaaat
 
 #510000
 0aaaaa
 
 #520000
 1aaaaa
+1aaaah
 1aaaai
 b100 aaaan
-b11 aaaao
-b100 aaaaq
-0aaaar
-0aaaas
+b11 aaaaq
+b100 aaaar
 0aaaat
+0aaaau
+0aaaav
 
 #530000
 0aaaaa
 
 #540000
 1aaaaa
-1aaaah
+0aaaah
 0aaaai
 b11 aaaan
-b101 aaaap
-1aaaar
-1aaaas
+b100 aaaao
+1aaaat
+1aaaau
 
 #550000
 0aaaaa
 
 #560000
 1aaaaa
-0aaaah
+1aaaah
 b100 aaaan
-b100 aaaao
-0aaaas
+b100 aaaaq
+0aaaau
 
 #570000
 0aaaaa
 
 #580000
 1aaaaa
-1aaaah
+0aaaah
 1aaaai
 b11 aaaao
-b100 aaaap
 b11 aaaaq
-0aaaar
-1aaaas
+b11 aaaar
+0aaaat
+1aaaau
 
 #590000
 0aaaaa
@@ -291,56 +298,56 @@ b11 aaaaq
 1aaaaa
 0aaaai
 b11 aaaan
-b100 aaaao
-1aaaar
+b100 aaaaq
+1aaaat
 
 #610000
 0aaaaa
 
 #620000
 1aaaaa
-0aaaah
+1aaaah
 1aaaai
 b100 aaaan
-b11 aaaao
-b10 aaaaq
-0aaaar
-0aaaas
+b11 aaaaq
+b10 aaaar
+0aaaat
+0aaaau
 
 #630000
 0aaaaa
 
 #640000
 1aaaaa
-1aaaah
+0aaaah
 0aaaai
 b11 aaaan
-b11 aaaap
-1aaaar
-1aaaas
+b10 aaaao
+1aaaat
+1aaaau
 
 #650000
 0aaaaa
 
 #660000
 1aaaaa
-0aaaah
+1aaaah
 b100 aaaan
-b100 aaaao
-0aaaas
+b100 aaaaq
+0aaaau
 
 #670000
 0aaaaa
 
 #680000
 1aaaaa
-1aaaah
+0aaaah
 1aaaai
-b11 aaaao
-b10 aaaap
-b1 aaaaq
-0aaaar
-1aaaas
+b1 aaaao
+b11 aaaaq
+b1 aaaar
+0aaaat
+1aaaau
 
 #690000
 0aaaaa
@@ -349,53 +356,50 @@ b1 aaaaq
 1aaaaa
 0aaaai
 b11 aaaan
-b100 aaaao
-1aaaar
+b100 aaaaq
+1aaaat
 
 #710000
 0aaaaa
 
 #720000
 1aaaaa
-0aaaah
+1aaaah
 1aaaai
 b100 aaaan
-b11 aaaao
-b0 aaaaq
-0aaaar
-0aaaas
+b11 aaaaq
+b0 aaaar
+0aaaat
+0aaaau
 
 #730000
 0aaaaa
 
 #740000
 1aaaaa
-1aaaah
+0aaaah
 0aaaai
 b11 aaaan
-b1 aaaao
-b1 aaaap
-1aaaar
-1aaaas
+b0 aaaao
+b1 aaaaq
+1aaaat
+1aaaau
 
 #750000
 0aaaaa
 
 #760000
 1aaaaa
-0aaaah
-b100 aaaan
-b110 aaaaq
-0aaaas
+1aaaah
+b0 aaaan
+0aaaau
 
 #770000
 0aaaaa
 
 #780000
 1aaaaa
-1aaaah
-b0 aaaap
-1aaaas
+0aaaah
 
 #790000
 0aaaaa

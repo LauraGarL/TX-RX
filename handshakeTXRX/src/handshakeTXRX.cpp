@@ -64,10 +64,12 @@ int sc_main(int argc, char* argv[]) {
     		sc_trace(wf, o_packet_received,"o_packet_received");
     		sc_trace(wf, o_nPackets_received,"o_nPackets_sent");
     		sc_trace(wf, o_packet_received,"o_packet_sent");
-    		sc_trace(wf, transmission.Transmitter->state, "TX State");
-    		sc_trace(wf, transmission.Receiver->state, "RX State");
-       		sc_trace(wf, transmission.Transmitter->count, "TX Count");
-        	sc_trace(wf, transmission.Receiver->count, "RX Count");
+    		sc_trace(wf, transmission.Transmitter->state, "TX_State");
+       		sc_trace(wf, transmission.Transmitter->count, "TX_Count");
+       		sc_trace(wf, transmission.Transmitter->packet, "TX_nPackets");
+    		sc_trace(wf, transmission.Receiver->state, "RX_State");
+        	sc_trace(wf, transmission.Receiver->count, "RX_Count");
+        	sc_trace(wf, transmission.Receiver->packet, "RX_nPackets");
         	sc_trace(wf, transmission.OnOff_fromRX_toTX, "OnOff_fromRX_toTX");
         	sc_trace(wf, transmission.Req_fromTX_toRX, "Req_fromTX_toRX");
         	sc_trace(wf, transmission.SoP_fromTX_toRX, "SoP_fromTX_toRX");
