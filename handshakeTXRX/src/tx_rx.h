@@ -8,7 +8,7 @@ using namespace std;
 #include "tx_moore.h"
 #include "rx_moore.h"
 
-#define DATA_WIDTH (8)
+#define DATA_WIDTH (9)
 #define nPACKETS_WIDTH (32)
 #define noFlitPacket (4)
 

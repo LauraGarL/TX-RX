@@ -6,7 +6,7 @@
 using namespace std;
 #include "systemc.h"
 
-#define DATA_WIDTH (8)
+#define DATA_WIDTH (9)
 #define nPACKETS_WIDTH (32)
 
 SC_MODULE(RX){
@@ -48,11 +48,6 @@ SC_MODULE(RX){
 					o_fifo_push.write(0);
 					count = 0;
 
-					if(prev_state==3){
-						o_packet_received.write(1);
-						o_nPackets_received.write(packet);
-					}else{o_packet_received.write(0);}
-
 					// Cuando se indique que el módulo está listo para recibir, iremos al estado 1 con las salidas en 0
 					if(i_ready_to_receive.read()){
 						state = 1;
@@ -60,15 +55,20 @@ SC_MODULE(RX){
 					} else { state = 0;} break;
 
 			  	  case 1:
-						o_OnOff.write(1);
-						o_fifo_push.write(0);
+					o_OnOff.write(1);
+					o_fifo_push.write(0);
 
-						//count = i_fifo_dataOut.read() + 1;
+					if(prev_state==3){
+						o_packet_received.write(1);
+						packet++;
+						o_nPackets_received.write(packet);
+					}else{o_packet_received.write(0);}
 
-			    	  if (i_Req.read() && i_SoP.read()) {
-			    		  state = 2;
-			    		  cout<<":: from S1:IDLE to S2:START OF RECEPTION"<< endl;
-			    	  } else { state = 1;} break;
+
+			    	if (i_Req.read() && i_SoP.read()) {
+			    	  state = 2;
+			    	  cout<<":: from S1:IDLE to S2:START OF RECEPTION"<< endl;
+			    	} else { state = 1;} break;
 
 			  	  case 2:
 						o_OnOff.write(0);
@@ -77,7 +77,7 @@ SC_MODULE(RX){
 						if(prev_state != 2){
 							o_fifo_push.write(1);
 							count = i_fifo_dataOut.read() + 1;
-							packet++;
+							//packet++;
 						}else{o_fifo_push.write(0);}
 
 						if ( !(i_fifo_full.read()) ) {

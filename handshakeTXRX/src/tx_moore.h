@@ -11,7 +11,7 @@
 using namespace std;
 #include "systemc.h"
 
-#define DATA_WIDTH (8)
+#define DATA_WIDTH (9)
 #define noFlitPacket (4)
 #define nPACKETS_WIDTH (32)
 
@@ -42,8 +42,8 @@ SC_MODULE(TX){
 			count = 0;
 			packet = 0;
 			prev_state = 0;
-			o_packet_sent = 0;
-			o_nPackets_sent = 0;
+			o_packet_sent.write(0);
+			o_nPackets_sent.write(0);
 			cout<<"@"<< sc_time_stamp() <<":: Reseted IDLE "<< endl;
 		}else if(i_clock.posedge())			// Aseguro que ocurra flanco positivo del reloj
 			{
@@ -60,8 +60,11 @@ SC_MODULE(TX){
 
 						if(prev_state!=0){
 							o_packet_sent.write(1);
-							o_nPackets_sent = packet;
-						}else{o_packet_sent=0;}
+							cout << "Packet sent flag updated to 1 at time " << sc_time_stamp() << endl;
+							packet++;
+							o_nPackets_sent.write(packet);
+							cout << "Number of packets sent updated to " << packet << " at time " << sc_time_stamp() << endl;
+						}else{o_packet_sent.write(0);}
 
 						if (i_packetReady.read()) {
 							next_state = 1;
@@ -87,7 +90,7 @@ SC_MODULE(TX){
 	                  if (prev_state != 2) {
 	                      count--;
 	                      cout << ":: Count decremented in S2, from previous state: " << prev_state.read() << endl;
-	                      packet++;
+	                      //packet++;
 	                  }
 
 			    	  if (!i_OnOff.read() && !(i_fifo_empty.read())) {
